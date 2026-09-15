@@ -246,14 +246,20 @@ example {x y : ℝ} (h1 : x + 3 = 5) (h2 : 2 * x - y * x = 0) : y = 2 :=
     _ = 2 := by ring
 
 /- The same problem again, written the way you would say it out loud.  Two new pieces of syntax
-are doing the work, and both are previews rather than things you are expected to produce yet.
+are doing the work.
 
-`have hx : x = 2 := by ...` proves a side fact and gives it the name `hx`.  That is the subject of
+`have hx : x = 2 := ...` proves a side fact and gives it the name `hx`.  That is the subject of
 Section 2.1.
 
-`rw [hx] at h2` rewrites a *hypothesis* instead of the goal, turning `h2` into
-`2 * 2 - y * 2 = 0`.  Every `rw` so far has acted on the goal.  This form first appears in
-Section 4.4.
+`rw [hx] at h2` rewrites a *hypothesis* rather than the goal.  Every `rw` so far has acted on the
+goal, and this is how you push a fact you have just proved into one of your assumptions.
+
+Notice where that rewrite sits.  It is inside the `have`, not at the top level of the proof.  At
+the top level it would overwrite `h2` for everything that follows, so the original hypothesis is
+gone and a later reader has to scroll back to work out what `h2` now says.  Inside the `have` it
+is scoped.  `h2` survives untouched, and what you come away with is a new fact carrying a name and
+a statement you can read straight off the page.  Prefer that arrangement whenever you can, since
+it is a small habit that keeps long proofs navigable.
 
 Compare the two proofs.  The point of `have` is not that it is shorter, although here it is.  It
 is that the Lean proof now has the same three-sentence shape as the proof on paper, with the
@@ -266,11 +272,12 @@ example {x y : ℝ} (h1 : x + 3 = 5) (h2 : 2 * x - y * x = 0) : y = 2 := by
       x = (x + 3) - 3 := by ring
       _ = 5 - 3 := by rw [h1]
       _ = 2 := by ring
-  rw [hx] at h2
-  -- `h2 : 2 * 2 - y * 2 = 0`
+  have h3 : 2 * 2 - y * 2 = 0 := by
+    rw [hx] at h2
+    apply h2
   calc
     y = (2 * 2 - (2 * 2 - y * 2)) / 2 := by ring
-    _ = (2 * 2 - 0) / 2 := by rw [h2]
+    _ = (2 * 2 - 0) / 2 := by rw [h3]
     _ = 2 := by ring
 
 /- Note.  The only exercise here that needs an idea rather than a calculation.  Squaring
