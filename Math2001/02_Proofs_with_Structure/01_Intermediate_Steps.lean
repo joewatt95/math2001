@@ -4,12 +4,16 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  This first example is Example 1.3.3 from Section 1.3, word for word.  Worth putting the
 two side by side.  The Chapter 1 proof had to smuggle `b = 1` into the middle of a calc chain,
 because there was nowhere else for it to live.  Here it is stated, named and proved on a line of
 its own.  That is what `have` buys, and the gain is shape rather than brevity. -/
 
+-- Book.
 example {a b : ℝ} (h1 : a - 5 * b = 4) (h2 : b + 2 = 3) : a = 9 := by
   have hb : b = 1 := by addarith [h2]
   calc
@@ -23,6 +27,7 @@ takes whatever the chain happens to conclude, so here `h3 : m + 3 ≤ 9`.  That 
 long statement you have just written as a chain, at the price of having to work out for yourself
 what you are now holding.  The closing `addarith [h3]` is what turns it into the goal. -/
 
+-- Book, annotated.
 example {m n : ℤ} (h1 : m + 3 ≤ 2 * n - 1) (h2 : n ≤ 5) : m ≤ 6 := by
   have h3 :=
     calc
@@ -52,6 +57,7 @@ example, cancels an exponent, which is to say it takes a square root.  And in th
 All three need to know a sign, and none of them mentions it.  `cancel t` here needs `t > 0` and
 takes it from `h2 : t ≥ 1` without being asked, exactly as `rel` and `extra` did in Section 1.4. -/
 
+-- Book, annotated.
 example {t : ℝ} (h1 : t ^ 2 = 3 * t) (h2 : t ≥ 1) : t ≥ 2 := by
   have h3 :=
     calc t * t = t ^ 2 := by ring
@@ -60,6 +66,7 @@ example {t : ℝ} (h1 : t ^ 2 = 3 * t) (h2 : t ≥ 1) : t ≥ 2 := by
   addarith [h3]
 
 
+-- Book, annotated.
 example {a b : ℝ} (h1 : a ^ 2 = b ^ 2 + 1) (h2 : a ≥ 0) : a ≥ 1 := by
   have h3 :=
     calc

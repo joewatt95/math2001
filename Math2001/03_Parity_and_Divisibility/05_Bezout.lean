@@ -3,6 +3,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  Every proof in this section runs on one fact.  When `a` and `b` are coprime there are
 integers `u` and `v` with
@@ -67,6 +70,7 @@ Keeping them in separate steps is what leaves one copy of `m` alive for the seco
 general rule is that `rw [h1, h2]` is fine when the two hypotheses are about different terms, as
 in the parity proofs of Section 3.1, and has to be split when they are about the same one. -/
 
+-- Book, annotated.
 example {m : ℤ} (h1 : 8 ∣ m) (h2 : 5 ∣ m) : 40 ∣ m := by
   obtain ⟨a, ha : m = 8 * a⟩ := h1
   obtain ⟨b, hb : m = 5 * b⟩ := h2

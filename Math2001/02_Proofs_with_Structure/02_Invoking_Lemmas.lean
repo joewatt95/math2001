@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 /- Note.  The new move, and the one the section is named for.  Until now every goal was closed by
 computing.  Here you instead find a library lemma whose conclusion has the shape of your goal,
 `apply` it, and are left proving that lemma's hypotheses.  `ne_of_lt` says `a < b → a ≠ b`, so
@@ -29,6 +32,7 @@ One more point.  `apply ne_of_lt` commits you to a direction before you have pro
 you have to know which side of `1` the value sits on in order to choose between `ne_of_lt` and
 `ne_of_gt`.  Settle that on paper first. -/
 
+-- Book, annotated.
 example {x : ℚ} (hx : 3 * x = 2) : x ≠ 1 := by
   apply ne_of_lt
   show x < 1
@@ -56,6 +60,7 @@ goals arrive in a fixed order.  What they buy is that guessing that order wrong 
 rather than letting you write a whole branch that answers the other question.  Part 2 of the
 summary has more on documentation that Lean checks. -/
 
+-- Book.
 example {a b : ℝ} (h1 : a ^ 2 + b ^ 2 = 0) : a ^ 2 = 0 := by
   apply le_antisymm
   calc
@@ -63,6 +68,7 @@ example {a b : ℝ} (h1 : a ^ 2 + b ^ 2 = 0) : a ^ 2 = 0 := by
     _ = 0 := h1
   extra
 
+-- Book, annotated.
 example {a b : ℝ} (h1 : a ^ 2 + b ^ 2 = 0) : a ^ 2 = 0 := by
   apply le_antisymm
   · show a^2 ≤ 0

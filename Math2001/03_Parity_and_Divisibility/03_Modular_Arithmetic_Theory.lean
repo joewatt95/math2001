@@ -4,6 +4,9 @@ import Library.Theory.ModEq.Defs
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  The disguise is two layers deep this time.  `a ≡ b [ZMOD n]` is defined as `n ∣ a - b`,
 and `∣` is itself the existential from Section 3.2, so underneath everything
@@ -23,21 +26,25 @@ compute with, and it picks `n ∣ a - b`.  The `show` before each `use`, and the
 Every proof in this section is the same three steps.  Subtract the two sides.  Factor out the
 difference the hypothesis gives you.  Read the remaining factor off as the witness.
 
+A proof marked `-- Book` is Macbeth's.  Unmarked ones are written for this course.
+
 The `show` goes before the `use` rather than after it.  Before, it states the existential you are
 about to satisfy, which is the thing the notation was hiding.  After, it would only restate the
 equation that the `calc` beneath it already opens and closes with. -/
 
 
+-- Book, annotated.
 example : 11 ≡ 3 [ZMOD 4] := by
-  show ∃ k, (11:ℤ) - 3 = 4 * k
+  show ∃ k, 11 - 3 = 4 * k
   use 2
   numbers
 
 example : -5 ≡ 1 [ZMOD 3] := by
-  show ∃ k, (-5:ℤ) - 1 = 3 * k
+  show ∃ k, -5 - 1 = 3 * k
   use -2
   numbers
 
+-- Book, annotated.
 theorem Int.ModEq.add {n a b c d : ℤ} (h1 : a ≡ b [ZMOD n]) (h2 : c ≡ d [ZMOD n]) :
     a + c ≡ b + d [ZMOD n] := by
   dsimp [Int.ModEq] at *
@@ -71,6 +78,7 @@ theorem Int.ModEq.neg {n a b : ℤ} (h1 : a ≡ b [ZMOD n]) : -a ≡ -b [ZMOD n]
     _ = -(n * x) := by rw [hx]
     _ = n * -x := by ring
 
+-- Book, annotated.
 theorem Int.ModEq.mul {n a b c d : ℤ} (h1 : a ≡ b [ZMOD n]) (h2 : c ≡ d [ZMOD n]) :
     a * c ≡ b * d [ZMOD n] := by
   obtain ⟨x, hx : a - b = n * x⟩ := h1
@@ -83,6 +91,7 @@ theorem Int.ModEq.mul {n a b c d : ℤ} (h1 : a ≡ b [ZMOD n]) (h2 : c ≡ d [Z
     _ = n * (x * c + b * y) := by ring
 
 
+-- Book, annotated.
 theorem Int.ModEq.pow_two (h : a ≡ b [ZMOD n]) : a ^ 2 ≡ b ^ 2 [ZMOD n] := by
   obtain ⟨x, hx : a - b = n * x⟩ := h
   show ∃ k, a ^ 2 - b ^ 2 = n * k
@@ -102,16 +111,19 @@ theorem Int.ModEq.pow_three (h : a ≡ b [ZMOD n]) : a ^ 3 ≡ b ^ 3 [ZMOD n] :=
     _ = n * x * (a ^ 2 + a * b + b ^ 2) := by rw [hx]
     _ = n * (x * (a ^ 2 + a * b + b ^ 2)) := by ring
 
+-- Book.
 theorem Int.ModEq.pow (k : ℕ) (h : a ≡ b [ZMOD n]) : a ^ k ≡ b ^ k [ZMOD n] :=
   sorry -- we'll prove this later in the book
 
 
+-- Book, annotated.
 theorem Int.ModEq.refl (a : ℤ) : a ≡ a [ZMOD n] := by
   show ∃ k, a - a = n * k
   use 0
   ring
 
 
+-- Book, annotated.
 example {a b : ℤ} (ha : a ≡ 2 [ZMOD 4]) :
     a * b ^ 2 + a ^ 2 * b + 3 * a ≡ 2 * b ^ 2 + 2 ^ 2 * b + 3 * 2 [ZMOD 4] := by
   obtain ⟨x, hx : a - 2 = 4 * x⟩ := ha
@@ -130,11 +142,27 @@ from this section reduces a congruence between compound expressions to congruenc
 parts, and `Int.ModEq.refl` finishes the parts that are literally equal.  That is what those
 lemmas were for.
 
-`add` and `mul` each leave two goals, so this proof is a tree four levels deep rather than a list
-of steps, and the bullets are what make that visible.  Flattened into a single run of twelve
-`apply` calls it compiles just as well, but then working out which goal any given line addresses
-means simulating every branch above it. -/
+`add` and `mul` each leave two goals, so this is a tree four levels deep rather than a list of
+steps.  Both versions below are the same proof.  In the first, working out which goal any given
+line addresses means simulating every branch above it.  In the second the bullets show it. -/
 
+-- Book.
+example {a b : ℤ} (ha : a ≡ 2 [ZMOD 4]) :
+    a * b ^ 2 + a ^ 2 * b + 3 * a ≡ 2 * b ^ 2 + 2 ^ 2 * b + 3 * 2 [ZMOD 4] := by
+  apply Int.ModEq.add
+  apply Int.ModEq.add
+  apply Int.ModEq.mul
+  apply ha
+  apply Int.ModEq.refl
+  apply Int.ModEq.mul
+  apply Int.ModEq.pow
+  apply ha
+  apply Int.ModEq.refl
+  apply Int.ModEq.mul
+  apply Int.ModEq.refl
+  apply ha
+
+-- Restyled.
 example {a b : ℤ} (ha : a ≡ 2 [ZMOD 4]) :
     a * b ^ 2 + a ^ 2 * b + 3 * a ≡ 2 * b ^ 2 + 2 ^ 2 * b + 3 * 2 [ZMOD 4] := by
   apply Int.ModEq.add
@@ -154,7 +182,7 @@ example {a b : ℤ} (ha : a ≡ 2 [ZMOD 4]) :
 
 
 example : 34 ≡ 104 [ZMOD 5] := by
-  show ∃ k, (34:ℤ) - 104 = 5 * k
+  show ∃ k, 34 - 104 = 5 * k
   use -14
   numbers
 

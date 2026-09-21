@@ -4,6 +4,9 @@ import Library.Tactic.ModEq
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  Section 3.3 proved a handful of lemmas about congruences, unfolding the definition every
 time.  This section is the payoff.  `rel` now understands `≡ [ZMOD n]`, so a congruence can be
@@ -20,11 +23,13 @@ drop the multiple of `n` with `extra`.  That is what the `_ = 2 + 5 * 8` and `_ 
 lines below are doing, and the pattern recurs in every exercise. -/
 
 
+-- Book.
 example {a b : ℤ} (ha : a ≡ 2 [ZMOD 4]) :
     a * b ^ 2 + a ^ 2 * b + 3 * a ≡ 2 * b ^ 2 + 2 ^ 2 * b + 3 * 2 [ZMOD 4] := by
   rel [ha]
 
 
+-- Book.
 example {a b : ℤ} (ha : a ≡ 4 [ZMOD 5]) (hb : b ≡ 3 [ZMOD 5]) :
     a * b + b ^ 3 + 3 ≡ 2 [ZMOD 5] :=
   calc
@@ -34,6 +39,7 @@ example {a b : ℤ} (ha : a ≡ 4 [ZMOD 5]) (hb : b ≡ 3 [ZMOD 5]) :
     _ ≡ 2 [ZMOD 5] := by extra
 
 
+-- Book.
 example : ∃ a : ℤ, 6 * a ≡ 4 [ZMOD 11] := by
   use 8
   calc
@@ -48,14 +54,33 @@ namely that every integer is congruent to exactly one of finitely many residues.
 The number of branches is the modulus, so this is a tool for small moduli.  The last exercise in
 this section needs five.
 
-Each case gets a bullet, since `mod_cases` leaves one goal per residue and three `calc` blocks in
-a row would otherwise run together.
+Both versions below are the same proof.  In the first, three `calc` blocks sit in a row with
+nothing between them, since `mod_cases` leaves one goal per residue and does not bullet them for
+you.
 
 Each also opens by naming the residue it is about, as `have : x ≡ 0 [ZMOD 3] := hx`.  The
 hypothesis is called `hx` in every branch and says something different in each, so with three
 branches you can count, and with eleven you cannot.  This is the same case label used after
 `obtain` in Section 2.3, and it costs one line to stop a reader counting bullets. -/
 
+-- Book.
+example {x : ℤ} : x ^ 3 ≡ x [ZMOD 3] := by
+  mod_cases hx : x % 3
+  calc
+    x ^ 3 ≡ 0 ^ 3 [ZMOD 3] := by rel [hx]
+    _ = 0 := by numbers
+    _ ≡ x [ZMOD 3] := by rel [hx]
+  calc
+    x ^ 3 ≡ 1 ^ 3 [ZMOD 3] := by rel [hx]
+    _ = 1 := by numbers
+    _ ≡ x [ZMOD 3] := by rel [hx]
+  calc
+    x ^ 3 ≡ 2 ^ 3 [ZMOD 3] := by rel [hx]
+    _ = 2 + 3 * 2 := by numbers
+    _ ≡ 2 [ZMOD 3] := by extra
+    _ ≡ x [ZMOD 3] := by rel [hx]
+
+-- Restyled.
 example {x : ℤ} : x ^ 3 ≡ x [ZMOD 3] := by
   mod_cases hx : x % 3
 
@@ -115,13 +140,13 @@ of `7` is quicker. -/
 example : ∃ a : ℤ, 4 * a ≡ 1 [ZMOD 7] := by
   use 2
   calc
-    (4:ℤ) * 2 = 1 + 7 * 1 := by numbers
+    4 * 2 = 1 + 7 * 1 := by numbers
     _ ≡ 1 [ZMOD 7] := by extra
 
 example : ∃ k : ℤ, 5 * k ≡ 6 [ZMOD 8] := by
   use 6
   calc
-    (5:ℤ) * 6 = 6 + 8 * 3 := by numbers
+    5 * 6 = 6 + 8 * 3 := by numbers
     _ ≡ 6 [ZMOD 8] := by extra
 
 example (n : ℤ) : 5 * n ^ 2 + 3 * n + 7 ≡ 1 [ZMOD 2] := by

@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  Taking an `∧` apart uses the same tactic as taking an `∨` apart, with different
 punctuation.  Angle brackets for "and", `obtain ⟨h1, h2⟩ := h`, because you get both at once.  A
@@ -16,6 +19,7 @@ Annotation works here too, and is worth the space for the same reason as in Sect
 
 Lean checks those statements, so they cannot drift out of step with what `h` actually says. -/
 
+-- Book.
 example {x y : ℤ} (h : 2 * x - y = 4 ∧ y - x + 1 = 2) : x = 5 := by
   obtain ⟨h1, h2⟩ := h
   calc
@@ -63,6 +67,7 @@ available to both branches, instead of being re-derived inside whichever branch 
 it.  That matters more here than usual, because `constructor` splits the proof in two and anything
 proved before the split is shared, while anything proved after it is not. -/
 
+-- Book, annotated.
 example {a b : ℝ} (h1 : a - 5 * b = 4) (h2 : b + 2 = 3) : a = 9 ∧ b = 1 := by
   constructor
   · show a = 9
@@ -75,6 +80,7 @@ example {a b : ℝ} (h1 : a - 5 * b = 4) (h2 : b + 2 = 3) : a = 9 ∧ b = 1 := b
     addarith [h2]
 
 
+-- Book, annotated.
 example {a b : ℝ} (h1 : a - 5 * b = 4) (h2 : b + 2 = 3) : a = 9 ∧ b = 1 := by
   have hb : b = 1 := by addarith [h2]
   constructor

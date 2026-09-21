@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  The book writes `obtain hx | hy := h`.  Spelling the cases out as
 `obtain (hx : x = 1) | (hy : y = -1) := h` costs nothing and lets you see what each branch may
@@ -13,6 +16,7 @@ order and Lean says so at once.
 The branches get different names, `hx` and `hy` rather than `h` twice, because the two cases here
 are about different variables. -/
 
+-- Book.
 example {x y : ℝ} (h : x = 1 ∨ y = -1) : x * y + x = y + 1 := by
   obtain hx | hy := h
   calc
@@ -23,6 +27,7 @@ example {x y : ℝ} (h : x = 1 ∨ y = -1) : x * y + x = y + 1 := by
     _ = -1 + 1 := by ring
     _ = y + 1 := by rw [hy]
 
+-- Book, annotated.
 example {x y : ℝ} (h : x = 1 ∨ y = -1) : x * y + x = y + 1 := by
   obtain (hx : x = 1) | (hy : y = -1) := h
   · calc
@@ -84,6 +89,7 @@ goal with `rw [h]` before saying `left`, because the rewrite makes it obvious wh
 provable.  The general lesson is that the order of your steps is yours to choose, and when a
 choice looks hard, doing the easy rewriting first often makes it easy. -/
 
+-- Book.
 example {x : ℝ} (hx : 2 * x + 1 = 5) : x = 1 ∨ x = 2 := by
   right
   calc
@@ -135,6 +141,7 @@ about size.  Only the inner one appears anywhere near the calculation you are re
 `have : n ≤ 0 := hn0` and `have : n ≥ 1 := hn0` lines opening the outer branches are what let you
 drop into a single leaf and read it without counting bullets back up the tree. -/
 
+-- Book, annotated.
 example {n : ℤ} : n ^ 2 ≠ 2 := by
   obtain (hn0 : n ≤ 0) | (hn0 : n ≥ 1) := le_or_succ_le n 0
   · have : n ≤ 0 := hn0

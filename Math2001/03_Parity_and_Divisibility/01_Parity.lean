@@ -3,6 +3,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 open Int
 
 
@@ -29,6 +32,7 @@ definition unfolds to exactly what you would write on paper, so guess it and let
 you want to check, control-click (or F12) on `Int.Odd` to jump to the definition. -/
 
 
+-- Book.
 example : Int.Odd (7 : ℤ) := by
   dsimp [Int.Odd]
   use 3
@@ -40,6 +44,7 @@ example : Int.Odd (-3 : ℤ) := by
   use -2
   numbers
 
+-- Book, annotated.
 example {n : ℤ} (hn : Int.Odd n) : Int.Odd (3 * n + 2) := by
   dsimp [Int.Odd] at *
   obtain ⟨k, hk : n = 2 * k + 1⟩ := hn
@@ -56,6 +61,7 @@ example {n : ℤ} (hn : Int.Odd n) : Int.Odd (7 * n - 4) := by
     7 * n - 4 = 7 * (2 * k + 1) - 4 := by rw [hk]
     _ = 2 * (7 * k + 1) + 1 := by ring
 
+-- Book, annotated.
 example {x y : ℤ} (hx : Int.Odd x) (hy : Int.Odd y) : Int.Odd (x + y + 1) := by
   obtain ⟨a, ha : x = 2 * a + 1⟩ := hx
   obtain ⟨b, hb : y = 2 * b + 1⟩ := hy
@@ -87,6 +93,7 @@ example {n : ℤ} (hn : Int.Even n) : Int.Odd (n ^ 2 + 2 * n - 5) := by
     n ^ 2 + 2 * n - 5 = (2 * k) ^ 2 + 2 * (2 * k) - 5 := by rw [hk]
     _ = 2 * (2 * k ^ 2 + 2 * k - 3) + 1 := by ring
 
+-- Book, annotated.
 example (n : ℤ) : Int.Even (n ^ 2 + n + 4) := by
   obtain (hn : Int.Even n) | (hn : Int.Odd n) := Int.even_or_odd_lib n
   · obtain ⟨x, hx : n = 2 * x⟩ := hn

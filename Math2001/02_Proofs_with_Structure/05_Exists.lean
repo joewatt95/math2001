@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  `obtain ⟨b, hb⟩ := h` unpacks an existential hypothesis into two pieces, a value `b` and
 a fact `hb` about it.  The angle brackets are the same ones used for `∧` in Section 2.4, and for
@@ -14,6 +17,7 @@ you ever learn about it is what `hb` says.  You cannot compute with it, you cann
 "really is", and any later step has to go through `hb`.  That is exactly how you would use "let b
 be such that ..." on paper. -/
 
+-- Book, annotated.
 example {a : ℚ} (h : ∃ b : ℚ, a = b ^ 2 + 1) : a > 0 := by
   obtain ⟨b, hb : a = b ^ 2 + 1⟩ := h
   calc
@@ -35,8 +39,8 @@ than for a different fact. -/
 
 example {t : ℝ} (h : ∃ a : ℝ, a * t < 0) : t ≠ 0 := by
   obtain ⟨x, hxt : x * t < 0⟩ := h
-  have H : x ≤ 0 ∨ x > 0 := le_or_gt x 0
-  obtain (hx : x ≤ 0) | (hx : x > 0) := H
+  have : x ≤ 0 ∨ x > 0 := le_or_gt x 0
+  obtain (hx : x ≤ 0) | (hx : x > 0) := this
 
   · have : x ≤ 0 := hx
     have : t > 0 := by
@@ -50,7 +54,7 @@ example {t : ℝ} (h : ∃ a : ℝ, a * t < 0) : t ≠ 0 := by
     have : t < 0 := by
       have hxt' : 0 < x * -t := by
         calc
-          (0:ℝ) < -(x * t) := by addarith [hxt]
+          0 < -(x * t) := by addarith [hxt]
           _ = x * -t := by ring
       have : 0 ≤ x := by addarith [hx]
       have : 0 < -t := by cancel x at hxt'
@@ -66,11 +70,13 @@ This is where Lean is harsher than a lecture.  On paper "such an `n` clearly exi
 Here you must produce one, and the search for it happens entirely outside Lean, on paper or by
 trial.  `use` records the answer, it does not help you find it. -/
 
+-- Book.
 example : ∃ n : ℤ, 12 * n = 84 := by
   use 7
   numbers
 
 
+-- Book.
 example (x : ℝ) : ∃ y : ℝ, y > x := by
   use x + 1
   extra
@@ -117,8 +123,9 @@ example {p q : ℝ} (h : p < q) : ∃ x, p < x ∧ x < q := by
       _ = q := by ring
 
 /- Note.  Four witnesses and four conjuncts.  `constructor` only ever splits a conjunction in two,
-so a chain of four becomes three nested splits, and the bullets and `show` lines are what stop the
-four `numbers` calls from blurring into one another.
+so a chain of four becomes three nested splits.  Both versions below are the same proof.  In the
+first, four bare `numbers` calls sit in a flat list and nothing says which claim each one settles.
+The bullets and `show` lines in the second say it.
 
 Notice that the nesting here is imposed rather than chosen.  Nothing about the argument is three
 levels deep, only the shape of `constructor`.  The last exercise in this section shows the way
@@ -128,6 +135,19 @@ The taxicab number is 1729, and this is Ramanujan's observation that it is the s
 expressible as a sum of two cubes in two different ways.  Lean checks the arithmetic instantly and
 contributes nothing whatever to finding it. -/
 
+-- Book.
+example : ∃ a b c d : ℕ,
+    a ^ 3 + b ^ 3 = 1729 ∧ c ^ 3 + d ^ 3 = 1729 ∧ a ≠ c ∧ a ≠ d := by
+  use 1, 12, 9, 10
+  constructor
+  numbers
+  constructor
+  numbers
+  constructor
+  numbers
+  numbers
+
+-- Restyled.
 example : ∃ a b c d : ℕ,
     a ^ 3 + b ^ 3 = 1729 ∧ c ^ 3 + d ^ 3 = 1729 ∧ a ≠ c ∧ a ≠ d := by
   use 1, 12, 9, 10
@@ -138,9 +158,9 @@ example : ∃ a b c d : ℕ,
     · show 9 ^ 3 + 10 ^ 3 = 1729
       numbers
     · constructor
-      · show (1 : ℕ) ≠ 9
+      · show 1 ≠ 9
         numbers
-      · show (1 : ℕ) ≠ 10
+      · show 1 ≠ 10
         numbers
 
 /-! # Exercises -/
@@ -157,9 +177,9 @@ example : ∃ m n : ℤ, m ^ 2 + n ^ 2 = 85 := by
 example : ∃ x : ℝ, x < 0 ∧ x ^ 2 < 1 := by
   use -1/2
   constructor
-  · show (-1/2 : ℝ) < 0
+  · show -1/2 < 0
     numbers
-  · show (-1/2 : ℝ) ^ 2 < 1
+  · show (-1/2) ^ 2 < 1
     numbers
 
 /- Note.  `use 0, 0` also works here, since `2 ^ 0 = 1 = 5 * 0 + 1`.  Nothing rules out the
@@ -197,7 +217,7 @@ example {t : ℝ} (h : ∃ a : ℝ, a * t + 1 < a + t) : t ≠ 1 := by
     have : t > 1 := by
       have h1 : 0 < (1 - a) * (t - 1) := by
         calc
-          (0:ℝ) < (a + t) - (a * t + 1) := by addarith [ha]
+          0 < (a + t) - (a * t + 1) := by addarith [ha]
           _ = (1 - a) * (t - 1) := by ring
       have : 0 ≤ 1 - a := by addarith [hx]
       have : 0 < t - 1 := by cancel 1 - a at h1
@@ -209,7 +229,7 @@ example {t : ℝ} (h : ∃ a : ℝ, a * t + 1 < a + t) : t ≠ 1 := by
     have : t < 1 := by
       have h1 : 0 < (a - 1) * (1 - t) := by
         calc
-          (0:ℝ) < (a + t) - (a * t + 1) := by addarith [ha]
+          0 < (a + t) - (a * t + 1) := by addarith [ha]
           _ = (a - 1) * (1 - t) := by ring
       have : 0 ≤ a - 1 := by addarith [hx]
       have : 0 < 1 - t := by cancel a - 1 at h1
@@ -227,22 +247,22 @@ example {m : ℤ} (h : ∃ a, 2 * a = m) : m ≠ 5 := by
   obtain (hx : a ≤ 2) | (hx : a ≥ 3) := le_or_succ_le a 2
 
   · have : a ≤ 2 := hx
-    have hm : m < 5 :=
+    have : m < 5 :=
       calc
         m = 2 * a := by rw [ha]
         _ ≤ 2 * 2 := by rel [hx]
         _ < 5 := by numbers
     apply ne_of_lt
-    apply hm
+    apply this
 
   · have : a ≥ 3 := hx
-    have hm : m > 5 :=
+    have : m > 5 :=
       calc
         m = 2 * a := by rw [ha]
         _ ≥ 2 * 3 := by rel [hx]
         _ > 5 := by numbers
     apply ne_of_gt
-    apply hm
+    apply this
 
 /- Note.  The useful lesson here is that `use` does not have to come first.  Splitting on the sign
 of `n` before choosing lets each branch pick its own witness, and no single simple witness works

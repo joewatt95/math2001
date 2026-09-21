@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 
 /- Note.  `a ∣ b` is the same kind of disguise as `Int.Even` in Section 3.1.  Underneath it is
 
@@ -23,6 +26,7 @@ whatever is left over is the witness to hand to `use`.  Finding that witness is 
 the algebra on paper first and reading it off. -/
 
 
+-- Book.
 example : (11 : ℕ) ∣ 88 := by
   dsimp [(· ∣ ·)]
   use 8
@@ -34,6 +38,7 @@ example : (-2 : ℤ) ∣ 6 := by
   use -3
   numbers
 
+-- Book, annotated.
 example {a b : ℤ} (hab : a ∣ b) : a ∣ b ^ 2 + 2 * b := by
   obtain ⟨k, hk : b = a * k⟩ := hab
   use k * (a * k + 2)
@@ -58,6 +63,7 @@ example {x y z : ℕ} (h : x * y ∣ z) : x ∣ z := by
     z = x * y * k := hk
     _ = x * (y * k) := by ring
 
+-- Book.
 example : ¬(5 : ℤ) ∣ 12 := by
   apply Int.not_dvd_of_exists_lt_and_lt
   use 2
@@ -66,6 +72,7 @@ example : ¬(5 : ℤ) ∣ 12 := by
   · numbers -- show `12 < 5 * (2 + 1)`
 
 
+-- Book, annotated.
 example {a b : ℕ} (hb : 0 < b) (hab : a ∣ b) : a ≤ b := by
   obtain ⟨k, hk : b = a * k⟩ := hab
   have H1 :=

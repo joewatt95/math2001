@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 /-! # Section 1.4: Proving inequalities -/
 
 
@@ -34,6 +37,7 @@ The direction of a hypothesis therefore does not have to match the direction of 
 decides the matter is where in the expression you apply it. -/
 
 -- Example 1.4.1
+-- Book.
 example {x y : ℤ} (hx : x + 3 ≤ 2) (hy : y + 2 * x ≥ 3) : y > 3 :=
   calc
     y = y + 2 * x - 2 * x := by ring
@@ -119,6 +123,7 @@ only push the expression up, and the first step deliberately goes up before the 
 it back down. -/
 
 -- Example 1.4.7
+-- Book.
 example {m n : ℤ} (h : m ^ 2 + n ≤ 2) : n ≤ 2 :=
   calc
     n ≤ m ^ 2 + n := by extra
@@ -167,6 +172,7 @@ example {a b : ℚ} (h1 : a ≥ 0) (h2 : b ≥ 0) (h3 : a + b ≤ 8) :
     _ = 7 * b + 72 := by ring
 
 -- Example 1.4.10
+-- Book.
 example {a b c : ℝ} :
     a ^ 2 * (a ^ 6 + 8 * b ^ 3 * c ^ 3) ≤ (a ^ 4 + b ^ 4 + c ^ 4) ^ 2 :=
   calc

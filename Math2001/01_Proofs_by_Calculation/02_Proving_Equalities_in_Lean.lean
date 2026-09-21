@@ -4,6 +4,9 @@ import Library.Basic
 
 math2001_init
 
+/- Proofs marked `-- Book` are Macbeth's, either unchanged or with annotations added.  The rest
+are written for this course. -/
+
 /-! # Section 1.2: Proving equalities in Lean
 
 This file should be worked through in parallel with the corresponding section of the book:
@@ -13,6 +16,7 @@ I recommend splitting your screen to display the code and the book side by side!
 
 
 -- Example 1.2.1
+-- Book.
 example {a b : ℚ} (h1 : a - b = 4) (h2 : a * b = 1) : (a + b) ^ 2 = 20 :=
   calc
     (a + b) ^ 2 = (a - b) ^ 2 + 4 * (a * b) := by ring
