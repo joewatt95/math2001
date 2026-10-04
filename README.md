@@ -33,33 +33,6 @@ opposite approach, installing the VS Code extension first and letting it set Lea
 works when you are starting from nothing, but it is the wrong route into an existing project like
 this one. Use the manual instructions.
 
-**Optional, and cheap to set now.** Lake can share build products between projects through a
-cache under `~/.cache/lake`, rather than keeping a private copy inside each one. Doing this while
-you are already configuring your shell costs nothing, and it starts paying off as soon as you have
-a second Lean project, which you will once you move on to your own work.
-
-Set the environment variable `LAKE_ARTIFACT_CACHE` to `true`, however your shell persists
-environment variables. With `bash` or `zsh`, for instance, that is a line in `~/.bashrc` or
-`~/.zshrc`:
-
-```
-export LAKE_ARTIFACT_CACHE=true
-```
-
-Other shells have their own syntax for the same thing. On Windows, run
-`setx LAKE_ARTIFACT_CACHE true` and open a new terminal. Lake accepts `true`, `yes`, `on` or `1`.
-
-Be realistic about what this buys you today. The largest thing it shares is Mathlib's `cache`
-executable, a binary well over 100 MB that every Mathlib project must build before it can download
-anything, so a second project skips that work entirely. It does not yet share Mathlib's compiled
-library, which `lake exe cache get` downloads into each project separately, so do not expect your
-disk usage to fall dramatically. If this course is the only Lean project you ever have, you can
-skip this step with nothing lost.
-
-Left unset, Lake reads from the shared cache but never writes to it, so nothing accumulates to be
-shared. One side effect to know about is that build products held in the cache do not appear under
-a project's `.lake/build`, so that directory can look sparser than you expect.
-
 ### 2. Clone the repository
 
 ```

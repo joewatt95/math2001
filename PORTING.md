@@ -26,13 +26,6 @@ themselves rather than a sign of breakage.
 
 The first build needs the Mathlib cache, so run `lake exe cache get` before `lake build`.
 
-If `LAKE_ARTIFACT_CACHE` is set, as the README suggests, build products live in a toolchain-wide
-cache under `~/.cache/lake` rather than under `.lake/build`. Expect a project's build directory to
-look sparse, and do not read anything into a missing `.olean` there. Deleting `.lake/build` no
-longer forces a rebuild either, since Lake restores from the shared cache instead. To measure a
-genuinely cold build you have to clear that cache too, which affects every Lean project on the
-machine.
-
 CI in [`.github/workflows/lean_build.yml`](.github/workflows/lean_build.yml) builds the whole
 project on Linux, macOS and Windows. Upstream built only `Library`, and only on Linux, through
 hand-written steps that fetched a fixed elan release from a hardcoded URL and used
