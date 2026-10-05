@@ -18,8 +18,17 @@ math2001_init
 -- 1.  A composite number has a proper divisor.  (Section 5.3, last exercise.  ~10 min)
 
 example {p : ℕ} (hp : ¬ Prime p) (hp2 : 2 ≤ p) : ∃ m, 2 ≤ m ∧ m < p ∧ m ∣ p := by
-  sorry
-
+  have : ¬ (∀ m, 2 ≤ m → m < p → ¬ m ∣ p) := by
+    intro h
+    apply hp
+    apply prime_test
+    · apply hp2
+    · intro m (h0 : 1 < m)
+      have : 2 ≤ m := by rel [h0]
+      apply h
+      apply this
+  push_neg at this
+  apply this
 
 -- 2.  A Pythagorean triple has no leg smaller than 3.  (Section 4.4.  ~20 min)
 
@@ -31,7 +40,9 @@ example {a b c : ℕ} (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
 -- 3.  `not_forall`, by hand.  (Section 5.3, third exercise.  ~12 min)
 
 example (P : α → Prop) : ¬ (∀ x, P x) ↔ ∃ x, ¬ P x := by
-  sorry
+  constructor
+  · sorry
+  · sorry
 
 
 -- 4.  Exactly one point is within 1 of everything in [1, 3].  (Section 4.3.  ~12 min)
